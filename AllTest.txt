@@ -1,0 +1,17 @@
+package com.juaracoding.junit10.suite;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import com.juaracoding.junit10.TestKolam;
+import com.juaracoding.junit10.TestSuhu;
+
+@RunWith(Suite.class)
+@SuiteClasses({
+	TestKolam.class,
+	TestSuhu.class
+})
+public class AllTests {
+
+}

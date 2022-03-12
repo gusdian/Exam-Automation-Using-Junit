@@ -1,0 +1,150 @@
+package com.juaracoding.junit10;
+
+import static org.junit.Assert.*;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+import com.juaracoding.junit10.UjianMinggu3.Kolam;
+
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnitParamsRunner.class)
+
+public class TestKolam {
+Kolam kolam;
+
+static final Logger log = getLogger(lookup().lookupClass());
+	@Before
+	public void setUp() throws Exception {
+		kolam = new Kolam();
+	}
+
+	@Rule
+	public TestWatcher testWatcher = new TestWatcher() {
+	
+		@Override
+	protected void succeeded(Description description) {
+		log.debug("Pesan Sukses: {}", description.getMethodName());
+	}
+		@Override
+	protected void failed(Throwable e, Description description) {
+		log.debug("Pesan Failed: {}", description.getMethodName());	
+		}
+	
+	}; 
+	@Test
+	@FileParameters("src/test/resources/KelilingKolam.csv")
+	public void testKelilingKolam(double p, double l, double t, double expect) {
+		log.debug("Testing 1");
+		double actual = kolam.KelilingKolam(p, l, t);
+		assertEquals(expect, actual, 0.0);
+	}
+	
+	@Test
+	public void testKelilingKolamBukanAngka() {
+		log.debug("Testing 2");
+		String panjangBukanAngka = "A";
+		String lebarBukanAngka = "B";
+		String tinggiBukanAngka = "C";
+		double convert1 = Double.parseDouble(panjangBukanAngka);
+		double convert2 = Double.parseDouble(lebarBukanAngka);
+		double convert3 = Double.parseDouble(tinggiBukanAngka);
+		double actual = kolam.KelilingKolam(convert1, convert2, convert3);
+		
+		String expect = "A,B,C";
+		
+		assertEquals(Double.parseDouble(expect), actual, 0.0);
+	}
+	
+	@Test
+	public void testKelilingKolamAngkaNegatif() {
+		log.debug("Testing 3");
+		double panjang = -5;
+		double lebar = 5;
+		double tinggi = 5;
+		double actual = kolam.KelilingKolam(panjang, lebar, tinggi);
+		
+		assertEquals(20, actual, 0.0);
+	}
+	
+	@Test
+	public void testKelilingKolamAngkaNull() {
+		log.debug("Testing 4");
+		double panjang = 0;
+		double lebar = 0;
+		double tinggi = 0;
+		Double panjangNull = null ;
+		Double lebarNull = null ;
+		Double tinggiNull = null ; 
+		double actual = kolam.KelilingKolam(panjang, lebar, tinggi);
+		
+		assertNull(panjangNull);
+		assertNull(lebarNull);
+		assertNull(tinggiNull);
+		assertEquals(0, actual, 0.0);
+	}
+
+
+	@Test
+	@FileParameters("src/test/resources/VolumeAirKolam.csv")
+	public void testVolumeAirKolam(double p, double l, double t, double expect) {
+		log.debug("Testing 5");
+		double actual = kolam.VolumeKolam(p, l, t);
+		assertEquals(expect, actual, 0.0);
+	}
+
+	@Test
+	public void testVolumeAirKolamBukanAngka() {
+		log.debug("Testing 6");
+		String panjangBukanAngka = "A";
+		String lebarBukanAngka = "B";
+		String tinggiBukanAngka = "C";
+		double convert1 = Double.parseDouble(panjangBukanAngka);
+		double convert2 = Double.parseDouble(lebarBukanAngka);
+		double convert3 = Double.parseDouble(tinggiBukanAngka);
+		double actual = kolam.VolumeKolam(convert1, convert2, convert3);
+		
+		String expect = "A,B,C";
+		
+		assertEquals(Double.parseDouble(expect), actual, 0.0);
+	}
+	
+	@Test
+	public void testVolumeAirAngkaNegatif() {
+		log.debug("Testing 7");
+		double panjang = -5;
+		double lebar = -5;
+		double tinggi = 5;
+		double actual = kolam.VolumeKolam(panjang, lebar, tinggi);
+		
+		assertEquals(125, actual, 0.0);
+	}
+	
+	@Test
+	public void testVolumeAirKolamAngkaNull() {
+		log.debug("Testing 8");
+		double panjang = 0;
+		double lebar = 0;
+		double tinggi = 0;
+		Double panjangNull = null ;
+		Double lebarNull = null ;
+		Double tinggiNull = null ; 
+		double actual = kolam.VolumeKolam(panjang, lebar, tinggi);
+		
+		assertNull(panjangNull);
+		assertNull(lebarNull);
+		assertNull(tinggiNull);
+		assertEquals(0, actual, 0.0);
+	}
+}

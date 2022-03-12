@@ -1,0 +1,88 @@
+package com.juaracoding.junit10;
+
+import static org.junit.Assert.*;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+
+import com.juaracoding.junit10.UjianMinggu3.Suhu;
+
+import junitparams.FileParameters;
+import junitparams.JUnitParamsRunner;
+
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnitParamsRunner.class)
+public class TestSuhu {
+Suhu suhu;
+
+static final Logger log = getLogger(lookup().lookupClass());
+	@Before
+	public void setUp() throws Exception {
+	suhu = new Suhu();
+	}
+	
+	@Rule
+	public TestWatcher testWatcher = new TestWatcher() {
+	
+		@Override
+	protected void succeeded(Description description) {
+		log.debug("Pesan Sukses: {}", description.getMethodName());
+	}
+		@Override
+	protected void failed(Throwable e, Description description) {
+		log.debug("Pesan Failed: {}", description.getMethodName());	
+		}
+	
+	}; 
+
+	@Test
+	@FileParameters("src/test/resources/suhu.csv")
+	public void testSuhu(double f, double expect) {
+		log.debug("Testing 1");
+		double actual = suhu.KonversiSuhu(f);
+		assertEquals(expect, actual, 0.9);	
+		}
+
+	@Test
+	public void testSuhuBukanAngka() {
+		log.debug("Testing 2");
+		String suhuBukanAngka = "A";
+		double convert = Double.parseDouble(suhuBukanAngka);
+		double actual = suhu.KonversiSuhu(convert);
+		
+		String expect = "A";
+		
+		assertEquals(Double.parseDouble(expect), actual, 0.0);
+	}
+	
+	@Test
+	public void testSuhuAngkaNegatif() {
+		log.debug("Testing 3");
+		double f = -5;
+		double actual = suhu.KonversiSuhu(f);
+		
+		assertEquals(-20.5, actual, 0.9);
+	}
+	
+	@Test
+	public void testKelilingKolamAngkaNull() {
+		log.debug("Testing 4");
+		double f = 32;
+		Double fNull = null ;
+		double actual = suhu.KonversiSuhu(f);
+		
+		assertNull(fNull);
+		assertEquals(0, actual, 0.0);
+	}
+
+}
